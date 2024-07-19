@@ -79,7 +79,20 @@ Python 3.11.9 or above.
     journalctl -xeu SharedNotepad.service
     ```
 
-## Setting .htaccess
+## Wiring with Apache Web Server
+
+1. Install Apache, following [this Ubuntu guide](https://ubuntu.com/tutorials/install-and-configure-apache).
+
+2. Enable Apache mods that allow proxy (`RewriteRule`)
+
+    ```sh
+    sudo a2enmod rewrite
+    sudo a2enmod proxy
+    sudo a2enmod proxy_http
+    sudo a2enmod proxy_balancer
+    ```
+
+### Setting .htaccess
 
 This is only required when you're rerouting the service to a custom path (e.g. `https://mydomain.com/shared-notepad`).  
 Put this `.htaccess` file on the corresponding directory (assuming you're using Apache web server).
@@ -93,7 +106,7 @@ Put this `.htaccess` file on the corresponding directory (assuming you're using 
 </IfModule>
 # END Force to HTTPS
 
-Options  FollowSymLinks -Indexes
+Options +FollowSymLinks -Indexes
 IndexIgnore *
 DirectoryIndex
 <IfModule mod_rewrite.c>
@@ -102,6 +115,24 @@ DirectoryIndex
     RewriteRule ^(.*)$ http://127.0.0.1:5678/$1 [P]
 </IfModule>
 ```
+
+For more complete guide, you can refer to [Digital Ocean's Guide](https://www.digitalocean.com/community/tutorials/how-to-use-the-htaccess-file).  
+The core point is, make sure to allow `.htaccess` override on directory level, you'll need this in `/etc/apache2/sites-available/your_domain.conf`:
+
+```text
+<VirtualHost *:80>
+    ...
+<Directory /var/www/your_domain>
+                ...
+                AllowOverride All
+                Order allow,deny
+                allow from all
+</Directory>
+    ...
+</VirtualHost> 
+```
+
+`.htaccess`
 
 ## Author
 
