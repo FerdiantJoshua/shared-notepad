@@ -9,6 +9,8 @@ Go to root path (`http://localhost:5678/`) to interact with the notepad.
 To save, you need to enter the randomly generated key in (`http://localhost:5678/key`).  
 This key is also generated and returned after a successful save, to eliminate the need of revisiting `/key` every single time.
 
+The length of text can be stored is currently limited to 1 MB. _(change this in `main.py`'s constant)_
+
 ## Environment
 
 Python 3.11.9 or above.
