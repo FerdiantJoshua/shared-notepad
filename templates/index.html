@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Shared Notepad</title>
+    </head>
+    <body>
+        <textarea id="text" type="text" rows="64" cols="220">>{{existing_text}}</textarea>
+        <br/>
+        <input id="key" type="number"/>
+        <button id="btnSave" onClick="save()">Save</button>
+        <br/>
+        <p id="result"></p>
+    </body>
+
+    <script>
+        const txtNewText = document.getElementById("text");
+        const txtKey = document.getElementById("key");
+        const domResult = document.getElementById("result");
+
+        async function save() {
+            const res = await fetch("save", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+                },
+                body: [`text=${txtNewText.value}`, `key=${txtKey.value}`].join("&"),
+            });
+            console.log(res)
+            domResult.innerText = await res.text()
+        }
+    </script>
+
+</html>
