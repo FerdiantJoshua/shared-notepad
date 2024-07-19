@@ -41,8 +41,7 @@ Python 3.11.9 or above.
 
 ## Running as SystemD Service (Linux Only)
 
-1. Save this file as `/etc/systemd/system/shared_notepad.service`  
-    Don't forget to ALSO **rename the path** inside `daemon_start.sh`
+1. Save this file as `/etc/systemd/system/SharedNotepad.service`  
 
     ```text
     [Unit]
@@ -57,13 +56,27 @@ Python 3.11.9 or above.
     WantedBy=multi-user.target
     ```
 
-2. Start/stop/restart service
+2. Copy the `daemon_start.sh`. Don't forget to ALSO **rename the path** inside the script.
 
     ```sh
-    systemctl enable shared_notepad # to start on boot
-    systemctl start shared_notepad
-    systemctl stop shared_notepad
-    systemctl disable shared_notepad # to prevent start on boot
+    cp daemon_start.sh.example daemon_start.sh
+    chmod +x daemon_start.sh
+    ```
+
+3. Start/stop/restart service
+
+    ```sh
+    systemctl enable SharedNotepad # to start on boot
+    systemctl start SharedNotepad
+    systemctl stop SharedNotepad
+    systemctl disable SharedNotepad # to prevent start on boot
+    ```
+
+4. Manage service status & log
+
+    ```sh
+    systemctl status SharedNotepad.service
+    journalctl -xeu SharedNotepad.service
     ```
 
 ## Setting .htaccess

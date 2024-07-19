@@ -4,3 +4,5 @@ venv*/
 
 *.txt
 !requirements.txt
+
+daemon_start.sh
